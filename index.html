@@ -5,41 +5,61 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 600px; /* Limits the width of the content for readability */
-      margin: 0 auto; /* Centers the content horizontally */
-      padding: 20px; /* Adds space around the content */
-      line-height: 1.6; /* Improves readability with line spacing */
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      background-color: #2F4F4F; /* Slate grey background */
+      color: #FFFFFF; /* White text for all elements */
     }
     h1 {
-      text-align: center; /* Centers the heading */
-      color: #333; /* Dark gray color for the heading */
+      text-align: center;
+      color: #FFFFFF; /* White heading */
     }
     p {
-      text-align: center; /* Centers the poem text */
-      font-size: 16px; /* Sets a readable font size */
+      text-align: center;
+      font-size: 16px;
+      color: #FFFFFF; /* White text */
     }
-  </style>
-</head>
-<body>
-  <h1>AD HOMINEM</h1>
-  <p>We offer hatred<br>
-  as though it were<br>
-  a fact of its object,<br>
-  when its only truth<br>
-  is our lens,<br>
-  its certitude our seething.<br>
-  The dastardly man<br>
-  is loved, probably,<br>
-  by his dog, if no one else is willing.<br>
-  In that evidence the antidote,<br>
-  the earth is not flat yet.<br>
-  The unhated comes around<br>
-  heralding relief. It is permitted<br>
-  to describe ourselves<br>
-  in vocary other than rage,<br>
-  to insist on blooming<br>
-  despite the pavement<br>
-  through its cracks.</p>
-  <p>More poems coming soon!</p>
-</body>
-</html>
+    p.header {
+      text-align: left; /* Aligns "More poems coming soon!" to the left */
+      position: absolute; /* Positions it at the top-left */
+      top: 20px;
+      left: 20px;
+      font-size: 14px;
+    }
+    p.poem {
+      font-family: "Georgia", serif;
+      font-style: italic;
+      background-color: #5A6A6A; /* Slightly lighter grey for contrast */
+      border: 1px solid #FFFFFF; /* White border */
+      padding: 20px;
+      border-radius: 5px;
+      line-height: 2;
+      color: #FFFFFF; /* White poem text */
+    }
+    p.author {
+      font-size: 14px;
+      font-style: italic;
+      color: #D3D3D3; /* Light grey for subtle contrast */
+      margin-top: -10px;
+    }
+    input, button {
+      display: block;
+      margin: 10px auto;
+      padding: 5px;
+      background-color: #FFFFFF; /* White background for input/button */
+      color: #2F4F4F; /* Slate grey text for input/button */
+      border: 1px solid #FFFFFF;
+    }
+    p.nav {
+      text-align: center;
+      margin-top: 20px;
+    }
+    p.nav a {
+      color: #FFFFFF; /* White link */
+      text-decoration: none; /* Removes underline */
+      font-weight: bold;
+    }
+    p.nav a:hover {
+      text-decoration: underline; /* Under

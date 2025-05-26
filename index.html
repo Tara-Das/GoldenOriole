@@ -8,7 +8,7 @@
       margin: 0;
       padding: 20px;
       line-height: 1.6;
-      background-color: #818589; /* Fallback background */
+      background-color: #818589;
       color: #FFFFFF;
       min-height: 100vh;
       position: relative;
@@ -19,11 +19,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 1; /* Behind all content */
+      z-index: 1;
     }
     .content {
       position: relative;
-      z-index: 2; /* Above the canvas */
+      z-index: 2;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -31,7 +31,7 @@
     }
     .text-box {
       max-width: 600px;
-      background-color: rgba(107, 110, 114, 0.9); /* Semi-transparent to match poem background */
+      background-color: rgba(107, 110, 114, 0.9);
       border: 1px solid #FFFFFF;
       border-radius: 5px;
       padding: 20px;
@@ -148,74 +148,88 @@
       to insist on blooming<br>
       despite the pavement<br>
       through its cracks.</p>
-      <button class="submit" onclick="callClaude()">Submit</button>
       <p>Enter a style to remix this poem:</p>
       <input type="text" id="promptInput" placeholder="e.g., Rewrite in a joyful tone">
-      <p id="claudeOutput">Claude's response will appear here.</p>
+      <button class="submit" onclick="openGoogleAIStudio()">Remix in Google AI Studio</button>
       <p class="nav"><a href="poem2.html">Click to read next poem →</a></p>
     </div>
   </div>
   <button class="reanimate" onclick="resetAnimation()">Re-animate Pencil Line</button>
   <p class="footer">More poems coming soon!</p>
-  <script src="script.js"></script>
   <script>
-    // Pencil line animation
+    // Grid-like pencil animation
     const canvas = document.getElementById('pencilCanvas');
     const ctx = canvas.getContext('2d');
     
-    // Set canvas size to match the viewport
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Handle window resize
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
     
-    // Pencil line properties
     let x = 0;
-    let y = canvas.height / 2;
-    let angle = 0;
-    const speed = 2;
-    const amplitude = 50;
+    let y = 0;
+    let drawingHorizontal = true;
+    const gridSize = 50;
+    const speed = 5;
     
-    // Animation loop
-    function draw() {
+    function drawGrid() {
       ctx.beginPath();
       ctx.strokeStyle = '#333333';
       ctx.lineWidth = 2;
       
-      const newX = x;
-      const newY = y + Math.sin(angle) * amplitude;
+      if (drawingHorizontal) {
+        ctx.moveTo(x, y);
+        x += speed;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        if (x >= canvas.width) {
+          x = 0;
+          y += gridSize;
+          drawingHorizontal = false;
+        }
+      } else {
+        ctx.moveTo(x, y);
+        y += speed;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        if (y >= canvas.height) {
+          y = 0;
+          x += gridSize;
+          drawingHorizontal = true;
+        }
+      }
       
-      ctx.moveTo(x, y);
-      ctx.lineTo(newX, newY);
-      ctx.stroke();
-      
-      x += speed;
-      angle += 0.1;
-      y = newY;
-      
-      if (x > canvas.width) {
+      if (x >= canvas.width && y >= canvas.height) {
         x = 0;
-        y = canvas.height / 2;
+        y = 0;
+        drawingHorizontal = true;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
       
-      requestAnimationFrame(draw);
+      requestAnimationFrame(drawGrid);
     }
     
-    // Reset animation function
     function resetAnimation() {
       x = 0;
-      y = canvas.height / 2;
-      angle = 0;
+      y = 0;
+      drawingHorizontal = true;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     
-    // Start the animation
-    draw();
+    drawGrid();
+
+    // Function to open Google AI Studio with embedded prompt
+    function openGoogleAIStudio() {
+      const style = document.getElementById('promptInput').value || 'a different style';
+      const poemText = document.getElementsByClassName('poem')[0].innerText;
+      const prompt = `Rewrite this poem in ${style}:\n${poemText}`;
+      const encodedPrompt = encodeURIComponent(prompt);
+      const googleAIStudioURL = `https://aistudio.google.com/app/prompts/new_chat?prompt=${encodedPrompt}`;
+      window.open(googleAIStudioURL, '_blank');
+    }
   </script>
 </body>
 </html>

@@ -8,36 +8,34 @@
       margin: 0;
       padding: 20px;
       line-height: 1.6;
-      background-color: #818589;
+      background-color: #818589; /* Fallback background */
       color: #FFFFFF;
       min-height: 100vh;
       position: relative;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* Behind all content */
+    }
+    .content {
+      position: relative;
+      z-index: 2; /* Above the canvas */
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      gap: 20px;
+      align-items: center;
+      min-height: 100vh;
     }
-    .container {
-      display: flex;
-      max-width: 1200px;
-      width: 100%;
-    }
-    .poem-column {
-      flex: 1;
+    .text-box {
       max-width: 600px;
-    }
-    .art-column {
-      flex: 1;
-      max-width: 400px;
-      height: 400px;
+      background-color: rgba(107, 110, 114, 0.9); /* Semi-transparent to match poem background */
       border: 1px solid #FFFFFF;
       border-radius: 5px;
-      background-color: #6B6E72;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
     h1 {
       text-align: center;
@@ -62,14 +60,11 @@
       right: 20px;
       font-size: 14px;
       margin: 0;
+      z-index: 2;
     }
     p.poem {
       font-family: "Georgia", serif;
       font-style: italic;
-      background-color: #6B6E72;
-      border: 1px solid #FFFFFF;
-      padding: 20px;
-      border-radius: 5px;
       line-height: 2;
       color: #FFFFFF;
     }
@@ -79,13 +74,25 @@
       color: #E8ECEF;
       margin-top: -10px;
     }
-    input, button {
+    input {
       display: block;
       margin: 10px auto;
       padding: 5px;
       background-color: #FFFFFF;
       color: #818589;
       border: 1px solid #FFFFFF;
+    }
+    button.submit {
+      display: block;
+      margin: 10px auto;
+      padding: 5px 10px;
+      background-color: #FFFFFF;
+      color: #818589;
+      border: 1px solid #FFFFFF;
+      cursor: pointer;
+    }
+    button.submit:hover {
+      background-color: #E8ECEF;
     }
     p.nav {
       text-align: center;
@@ -99,18 +106,17 @@
     p.nav a:hover {
       text-decoration: underline;
     }
-    canvas {
-      display: block;
-      width: 100%;
-      height: 80%; /* Leave space for the button */
-    }
     button.reanimate {
-      margin: 10px;
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
       padding: 5px 10px;
       background-color: #FFFFFF;
       color: #818589;
       border: 1px solid #FFFFFF;
       cursor: pointer;
+      z-index: 2;
     }
     button.reanimate:hover {
       background-color: #E8ECEF;
@@ -118,8 +124,9 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="poem-column">
+  <canvas id="pencilCanvas"></canvas>
+  <div class="content">
+    <div class="text-box">
       <h2 class="header">The AI Interactive Poetry Project</h2>
       <h1>AD HOMINEM</h1>
       <p class="author">by Tara Das</p>
@@ -141,17 +148,14 @@
       to insist on blooming<br>
       despite the pavement<br>
       through its cracks.</p>
+      <button class="submit" onclick="callClaude()">Submit</button>
       <p>Enter a style to remix this poem:</p>
       <input type="text" id="promptInput" placeholder="e.g., Rewrite in a joyful tone">
-      <button onclick="callClaude()">Submit</button>
       <p id="claudeOutput">Claude's response will appear here.</p>
       <p class="nav"><a href="poem2.html">Click to read next poem →</a></p>
     </div>
-    <div class="art-column">
-      <canvas id="pencilCanvas"></canvas>
-      <button class="reanimate" onclick="resetAnimation()">Re-animate Pencil Line</button>
-    </div>
   </div>
+  <button class="reanimate" onclick="resetAnimation()">Re-animate Pencil Line</button>
   <p class="footer">More poems coming soon!</p>
   <script src="script.js"></script>
   <script>
@@ -159,10 +163,59 @@
     const canvas = document.getElementById('pencilCanvas');
     const ctx = canvas.getContext('2d');
     
-    // Set canvas size to match its container
-    canvas.width = canvas.parentElement.clientWidth;
-    canvas.height = canvas.parentElement.clientHeight * 0.8; // Adjust for button space
+    // Set canvas size to match the viewport
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
     
     // Pencil line properties
     let x = 0;
-    let y = canvas.height /
+    let y = canvas.height / 2;
+    let angle = 0;
+    const speed = 2;
+    const amplitude = 50;
+    
+    // Animation loop
+    function draw() {
+      ctx.beginPath();
+      ctx.strokeStyle = '#333333';
+      ctx.lineWidth = 2;
+      
+      const newX = x;
+      const newY = y + Math.sin(angle) * amplitude;
+      
+      ctx.moveTo(x, y);
+      ctx.lineTo(newX, newY);
+      ctx.stroke();
+      
+      x += speed;
+      angle += 0.1;
+      y = newY;
+      
+      if (x > canvas.width) {
+        x = 0;
+        y = canvas.height / 2;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      
+      requestAnimationFrame(draw);
+    }
+    
+    // Reset animation function
+    function resetAnimation() {
+      x = 0;
+      y = canvas.height / 2;
+      angle = 0;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    // Start the animation
+    draw();
+  </script>
+</body>
+</html>

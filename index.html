@@ -11,32 +11,35 @@
       line-height: 1.6;
       background-color: #2F4F4F; /* Slate grey background */
       color: #FFFFFF; /* White text for all elements */
+      min-height: 100vh; /* Ensures the body takes full viewport height */
+      position: relative; /* Allows absolute positioning of header */
     }
     h1 {
       text-align: center;
-      color: #FFFFFF; /* White heading */
+      color: #FFFFFF;
     }
     p {
       text-align: center;
       font-size: 16px;
-      color: #FFFFFF; /* White text */
+      color: #FFFFFF;
     }
     p.header {
-      text-align: left; /* Aligns "More poems coming soon!" to the left */
-      position: absolute; /* Positions it at the top-left */
+      text-align: left;
+      position: absolute;
       top: 20px;
       left: 20px;
       font-size: 14px;
+      margin: 0;
     }
     p.poem {
       font-family: "Georgia", serif;
       font-style: italic;
-      background-color: #5A6A6A; /* Slightly lighter grey for contrast */
-      border: 1px solid #FFFFFF; /* White border */
+      background-color: #5A6A6A;
+      border: 1px solid #FFFFFF;
       padding: 20px;
       border-radius: 5px;
       line-height: 2;
-      color: #FFFFFF; /* White poem text */
+      color: #FFFFFF;
     }
     p.author {
       font-size: 14px;
@@ -48,8 +51,8 @@
       display: block;
       margin: 10px auto;
       padding: 5px;
-      background-color: #FFFFFF; /* White background for input/button */
-      color: #2F4F4F; /* Slate grey text for input/button */
+      background-color: #FFFFFF;
+      color: #2F4F4F;
       border: 1px solid #FFFFFF;
     }
     p.nav {
@@ -57,9 +60,42 @@
       margin-top: 20px;
     }
     p.nav a {
-      color: #FFFFFF; /* White link */
-      text-decoration: none; /* Removes underline */
+      color: #FFFFFF;
+      text-decoration: none;
       font-weight: bold;
     }
     p.nav a:hover {
-      text-decoration: underline; /* Under
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <p class="header">More poems coming soon!</p>
+  <h1>AD HOMINEM</h1>
+  <p class="author">by Tara Das</p>
+  <p class="poem">We offer hatred<br>
+  as though it were<br>
+  a fact of its object,<br>
+  when its only truth<br>
+  is our lens,<br>
+  its certitude our seething.<br>
+  The dastardly man<br>
+  is loved, probably,<br>
+  by his dog, if no one else is willing.<br>
+  In that evidence the antidote,<br>
+  the earth is not flat yet.<br>
+  The unhated comes around<br>
+  heralding relief. It is permitted<br>
+  to describe ourselves<br>
+  in vocary other than rage,<br>
+  to insist on blooming<br>
+  despite the pavement<br>
+  through its cracks.</p>
+  <p>Enter a style to remix this poem:</p>
+  <input type="text" id="promptInput" placeholder="e.g., Rewrite in a joyful tone">
+  <button onclick="callClaude()">Submit</button>
+  <p id="claudeOutput">Claude's response will appear here.</p>
+  <p class="nav"><a href="poem2.html">Click to read next poem →</a></p>
+  <script src="script.js"></script>
+</body>
+</html>

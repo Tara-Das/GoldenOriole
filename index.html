@@ -9,32 +9,39 @@
       margin: 0 auto;
       padding: 20px;
       line-height: 1.6;
-      background-color: #2F4F4F; /* Slate grey background */
+      background-color: #818589; /* New slate grey background */
       color: #FFFFFF; /* White text for all elements */
-      min-height: 100vh; /* Ensures the body takes full viewport height */
-      position: relative; /* Allows absolute positioning of header */
+      min-height: 100vh;
+      position: relative;
     }
     h1 {
       text-align: center;
       color: #FFFFFF;
+      margin-top: 10px;
+    }
+    h2.header {
+      text-align: center;
+      font-size: 20px;
+      color: #E8ECEF; /* Adjusted for better contrast */
+      margin-bottom: 10px;
     }
     p {
       text-align: center;
       font-size: 16px;
       color: #FFFFFF;
     }
-    p.header {
-      text-align: left;
+    p.footer {
+      text-align: right;
       position: absolute;
-      top: 20px;
-      left: 20px;
+      bottom: 20px;
+      right: 20px;
       font-size: 14px;
       margin: 0;
     }
     p.poem {
       font-family: "Georgia", serif;
       font-style: italic;
-      background-color: #5A6A6A;
+      background-color: #6B6E72; /* Darker grey for contrast */
       border: 1px solid #FFFFFF;
       padding: 20px;
       border-radius: 5px;
@@ -44,7 +51,7 @@
     p.author {
       font-size: 14px;
       font-style: italic;
-      color: #D3D3D3; /* Light grey for subtle contrast */
+      color: #E8ECEF; /* Adjusted for better contrast */
       margin-top: -10px;
     }
     input, button {
@@ -52,7 +59,7 @@
       margin: 10px auto;
       padding: 5px;
       background-color: #FFFFFF;
-      color: #2F4F4F;
+      color: #818589; /* Matches new background */
       border: 1px solid #FFFFFF;
     }
     p.nav {
@@ -70,7 +77,7 @@
   </style>
 </head>
 <body>
-  <p class="header">More poems coming soon!</p>
+  <h2 class="header">The AI Interactive Poetry Project</h2>
   <h1>AD HOMINEM</h1>
   <p class="author">by Tara Das</p>
   <p class="poem">We offer hatred<br>
@@ -93,9 +100,3 @@
   through its cracks.</p>
   <p>Enter a style to remix this poem:</p>
   <input type="text" id="promptInput" placeholder="e.g., Rewrite in a joyful tone">
-  <button onclick="callClaude()">Submit</button>
-  <p id="claudeOutput">Claude's response will appear here.</p>
-  <p class="nav"><a href="poem2.html">Click to read next poem →</a></p>
-  <script src="script.js"></script>
-</body>
-</html>

@@ -5,14 +5,39 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 0 auto;
+      margin: 0;
       padding: 20px;
       line-height: 1.6;
-      background-color: #818589; /* New slate grey background */
-      color: #FFFFFF; /* White text for all elements */
+      background-color: #818589;
+      color: #FFFFFF;
       min-height: 100vh;
       position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .container {
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+    }
+    .poem-column {
+      flex: 1;
+      max-width: 600px;
+    }
+    .art-column {
+      flex: 1;
+      max-width: 400px;
+      height: 400px;
+      border: 1px solid #FFFFFF;
+      border-radius: 5px;
+      background-color: #6B6E72;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     h1 {
       text-align: center;
@@ -22,7 +47,7 @@
     h2.header {
       text-align: center;
       font-size: 20px;
-      color: #E8ECEF; /* Adjusted for better contrast */
+      color: #E8ECEF;
       margin-bottom: 10px;
     }
     p {
@@ -41,7 +66,7 @@
     p.poem {
       font-family: "Georgia", serif;
       font-style: italic;
-      background-color: #6B6E72; /* Darker grey for contrast */
+      background-color: #6B6E72;
       border: 1px solid #FFFFFF;
       padding: 20px;
       border-radius: 5px;
@@ -51,7 +76,7 @@
     p.author {
       font-size: 14px;
       font-style: italic;
-      color: #E8ECEF; /* Adjusted for better contrast */
+      color: #E8ECEF;
       margin-top: -10px;
     }
     input, button {
@@ -59,7 +84,7 @@
       margin: 10px auto;
       padding: 5px;
       background-color: #FFFFFF;
-      color: #818589; /* Matches new background */
+      color: #818589;
       border: 1px solid #FFFFFF;
     }
     p.nav {
@@ -74,29 +99,70 @@
     p.nav a:hover {
       text-decoration: underline;
     }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 80%; /* Leave space for the button */
+    }
+    button.reanimate {
+      margin: 10px;
+      padding: 5px 10px;
+      background-color: #FFFFFF;
+      color: #818589;
+      border: 1px solid #FFFFFF;
+      cursor: pointer;
+    }
+    button.reanimate:hover {
+      background-color: #E8ECEF;
+    }
   </style>
 </head>
 <body>
-  <h2 class="header">The AI Interactive Poetry Project</h2>
-  <h1>AD HOMINEM</h1>
-  <p class="author">by Tara Das</p>
-  <p class="poem">We offer hatred<br>
-  as though it were<br>
-  a fact of its object,<br>
-  when its only truth<br>
-  is our lens,<br>
-  its certitude our seething.<br>
-  The dastardly man<br>
-  is loved, probably,<br>
-  by his dog, if no one else is willing.<br>
-  In that evidence the antidote,<br>
-  the earth is not flat yet.<br>
-  The unhated comes around<br>
-  heralding relief. It is permitted<br>
-  to describe ourselves<br>
-  in vocary other than rage,<br>
-  to insist on blooming<br>
-  despite the pavement<br>
-  through its cracks.</p>
-  <p>Enter a style to remix this poem:</p>
-  <input type="text" id="promptInput" placeholder="e.g., Rewrite in a joyful tone">
+  <div class="container">
+    <div class="poem-column">
+      <h2 class="header">The AI Interactive Poetry Project</h2>
+      <h1>AD HOMINEM</h1>
+      <p class="author">by Tara Das</p>
+      <p class="poem">We offer hatred<br>
+      as though it were<br>
+      a fact of its object,<br>
+      when its only truth<br>
+      is our lens,<br>
+      its certitude our seething.<br>
+      The dastardly man<br>
+      is loved, probably,<br>
+      by his dog, if no one else is willing.<br>
+      In that evidence the antidote,<br>
+      the earth is not flat yet.<br>
+      The unhated comes around<br>
+      heralding relief. It is permitted<br>
+      to describe ourselves<br>
+      in vocary other than rage,<br>
+      to insist on blooming<br>
+      despite the pavement<br>
+      through its cracks.</p>
+      <p>Enter a style to remix this poem:</p>
+      <input type="text" id="promptInput" placeholder="e.g., Rewrite in a joyful tone">
+      <button onclick="callClaude()">Submit</button>
+      <p id="claudeOutput">Claude's response will appear here.</p>
+      <p class="nav"><a href="poem2.html">Click to read next poem →</a></p>
+    </div>
+    <div class="art-column">
+      <canvas id="pencilCanvas"></canvas>
+      <button class="reanimate" onclick="resetAnimation()">Re-animate Pencil Line</button>
+    </div>
+  </div>
+  <p class="footer">More poems coming soon!</p>
+  <script src="script.js"></script>
+  <script>
+    // Pencil line animation
+    const canvas = document.getElementById('pencilCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size to match its container
+    canvas.width = canvas.parentElement.clientWidth;
+    canvas.height = canvas.parentElement.clientHeight * 0.8; // Adjust for button space
+    
+    // Pencil line properties
+    let x = 0;
+    let y = canvas.height /

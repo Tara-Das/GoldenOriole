@@ -8,7 +8,7 @@
       margin: 0;
       padding: 20px;
       line-height: 1.6;
-      background-color: #818589;
+      background: linear-gradient(to right, #D3D3D3, #FFFFFF, #A9A9A9); /* Grey to white to grey gradient */
       color: #FFFFFF;
       min-height: 100vh;
       position: relative;
@@ -167,6 +167,7 @@
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      resetAnimation();
     });
     
     let x = 0;
@@ -175,38 +176,68 @@
     const gridSize = 50;
     const speed = 5;
     
+    let horizontalLines = [];
+    let verticalLines = [];
+    let currentX = 0;
+    let currentY = 0;
+    
     function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      for (let yPos of horizontalLines) {
+        ctx.beginPath();
+        ctx.strokeStyle = '#333333';
+        ctx.lineWidth = 2;
+        ctx.moveTo(0, yPos);
+        ctx.lineTo(canvas.width, yPos);
+        ctx.stroke();
+      }
+      
+      for (let xPos of verticalLines) {
+        ctx.beginPath();
+        ctx.strokeStyle = '#333333';
+        ctx.lineWidth = 2;
+        ctx.moveTo(xPos, 0);
+        ctx.lineTo(xPos, canvas.height);
+        ctx.stroke();
+      }
+      
       ctx.beginPath();
       ctx.strokeStyle = '#333333';
       ctx.lineWidth = 2;
       
       if (drawingHorizontal) {
-        ctx.moveTo(x, y);
-        x += speed;
-        ctx.lineTo(x, y);
+        ctx.moveTo(0, y);
+        ctx.lineTo(currentX, y);
         ctx.stroke();
-        if (x >= canvas.width) {
-          x = 0;
+        
+        currentX += speed;
+        if (currentX >= canvas.width) {
+          horizontalLines.push(y);
+          currentX = 0;
           y += gridSize;
-          drawingHorizontal = false;
+          if (y >= canvas.height) {
+            y = 0;
+            drawingHorizontal = false;
+          }
         }
       } else {
-        ctx.moveTo(x, y);
-        y += speed;
-        ctx.lineTo(x, y);
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, currentY);
         ctx.stroke();
-        if (y >= canvas.height) {
-          y = 0;
+        
+        currentY += speed;
+        if (currentY >= canvas.height) {
+          verticalLines.push(x);
+          currentY = 0;
           x += gridSize;
-          drawingHorizontal = true;
+          if (x >= canvas.width) {
+            x = 0;
+            drawingHorizontal = true;
+            horizontalLines = [];
+            verticalLines = [];
+          }
         }
-      }
-      
-      if (x >= canvas.width && y >= canvas.height) {
-        x = 0;
-        y = 0;
-        drawingHorizontal = true;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
       
       requestAnimationFrame(drawGrid);
@@ -215,7 +246,11 @@
     function resetAnimation() {
       x = 0;
       y = 0;
+      currentX = 0;
+      currentY = 0;
       drawingHorizontal = true;
+      horizontalLines = [];
+      verticalLines = [];
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
     
